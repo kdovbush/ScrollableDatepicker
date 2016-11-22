@@ -88,7 +88,7 @@ extension ScrollableDatepicker: UICollectionViewDataSource {
         let date = dates[indexPath.row]
         let isWeekend = isWeekday(date)
         let isSelected = date.timeIntervalSince1970 == selectedDate?.timeIntervalSince1970
-        let isCurrent = date.timeIntervalSince1970 != currentDay?.timeIntervalSince1970
+        let isCurrent = date.timeIntervalSince1970 == currentDay?.timeIntervalSince1970
         
         cell.backgroundColor = cellBackgroundColor
         cell.dateLabel.textColor = isCurrent ? selectedColor : dateLabelTextColor
