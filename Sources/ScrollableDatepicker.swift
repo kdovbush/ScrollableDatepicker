@@ -8,6 +8,7 @@ import UIKit
 
 public protocol ScrollableDatepickerDelegate: class {
     func datepicker(_ datepicker: ScrollableDatepicker, didSelectDate date: Date)
+    func datepicker(_ datepicker: ScrollableDatepicker, didChangeDate oldDate: Date?, to date: Date)
 }
 
 
@@ -40,6 +41,8 @@ public class ScrollableDatepicker: LoadableFromXibView {
     public var monthLabelTextColor: UIColor = UIColor.lightGray
     public var weekDayTextColor: UIColor = UIColor.white
     public var selectedColor: UIColor = UIColor(red: 0.255, green: 0.714, blue: 0.553, alpha: 1.00)
+    
+    public var previousSelectedDate: Date?
     
     public var cellConfiguration: ((_ cell: ScrollableDatepickerDayCell, _ isWeekend: Bool, _ isSelected: Bool) -> Void)? {
         didSet {
@@ -120,8 +123,12 @@ extension ScrollableDatepicker: UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let date = dates[indexPath.row]
+        
+        previousSelectedDate = selectedDate
         selectedDate = date
+        
         delegate?.datepicker(self, didSelectDate: date)
+        delegate?.datepicker(self, didChangeDate: previousSelectedDate, to: date)
         
         collectionView.deselectItem(at: indexPath, animated: true)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
